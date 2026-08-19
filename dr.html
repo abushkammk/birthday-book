@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Маленькая книга для тебя ✨</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 20% 20%, #392842 0, transparent 28%),
+        radial-gradient(circle at 80% 70%, #252040 0, transparent 30%),
+        #0d0a12;
+    color: #3d2b25;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+/* ================= BACKGROUND ================= */
+
+#background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    color: #fff1b8;
+    animation: starFloat 3s ease-in-out infinite;
+    opacity: .7;
+}
+
+@keyframes starFloat {
+    0%,100% {
+        opacity: .25;
+        transform: scale(.7);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.25);
+    }
+}
+
+.moon {
+    position: absolute;
+    right: 8%;
+    top: 10%;
+    font-size: 55px;
+    filter: drop-shadow(0 0 15px rgba(255,220,130,.4));
+    animation: moonFloat 5s ease-in-out infinite;
+}
+
+@keyframes moonFloat {
+    50% {
+        transform: translateY(-12px) rotate(6deg);
+    }
+}
+
+/* ================= BOOK ================= */
+
+.book-wrapper {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(900px, 94vw);
+    height: min(620px, 88vh);
+    perspective: 2200px;
+}
+
+.book {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+/* ================= PAGES ================= */
+
+.page {
+    position: absolute;
+    inset: 0;
+
+    padding: clamp(35px, 5vw, 60px);
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 28px,
+            rgba(120,80,50,.055) 29px
+        ),
+        #f4e5c4;
+
+    border-radius: 5px 20px 20px 5px;
+
+    box-shadow:
+        0 35px 80px rgba(0,0,0,.6),
+        inset 12px 0 25px rgba(80,45,20,.08);
+
+    transform-origin: left center;
+
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+
+    transition:
+        transform 1.15s cubic-bezier(.77,0,.18,1),
+        box-shadow .5s;
+
+    overflow: hidden;
+}
+
+.page::before {
+    content: "";
+    position: absolute;
+    left: 22px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(100,60,40,.15);
+}
+
+.page.flipped {
+    transform: rotateY(-180deg);
+}
+
+.page.flipping {
+    box-shadow:
+        -20px 20px 45px rgba(0,0,0,.45);
+}
+
+/* ================= COVER ================= */
+
+.cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #fff4dc;
+
+    background:
+        radial-gradient(circle at center,
+        rgba(255,220,170,.16),
+        transparent 45%),
+        linear-gradient(135deg,#3c2938,#151019);
+}
+
+.cover::before {
+    display: none;
+}
+
+.cover-decoration {
+    position: absolute;
+    font-size: 32px;
+    opacity: .8;
+}
+
+.cd1 {
+    top: 35px;
+    left: 40px;
+}
+
+.cd2 {
+    top: 40px;
+    right: 45px;
+}
+
+.cd3 {
+    bottom: 35px;
+    left: 45px;
+}
+
+.cd4 {
+    bottom: 35px;
+    right: 45px;
+}
+
+.book-icon {
+    font-size: 90px;
+    animation: bookFloat 4s ease-in-out infinite;
+    filter: drop-shadow(0 15px 20px rgba(0,0,0,.4));
+}
+
+@keyframes bookFloat {
+    0%,100% {
+        transform: translateY(0) rotate(-3deg);
+    }
+    50% {
+        transform: translateY(-15px) rotate(3deg);
+    }
+}
+
+.cover h1 {
+    margin-top: 18px;
+    font-size: clamp(42px,7vw,70px);
+    font-weight: normal;
+}
+
+.cover p {
+    margin-top: 15px;
+    line-height: 1.7;
+    font-family: Arial,sans-serif;
+    opacity: .72;
+}
+
+.open-btn {
+    margin-top: 32px;
+    padding: 14px 32px;
+    border: 0;
+    border-radius: 40px;
+
+    background: #f1d39b;
+    color: #38251e;
+
+    font-family: Georgia,serif;
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.open-btn:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 12px 25px rgba(0,0,0,.3);
+}
+
+/* ================= CONTENT ================= */
+
+.content {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.chapter {
+    font-family: Arial,sans-serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: #887764;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+.page.active .chapter {
+    animation: appear .7s .15s forwards;
+}
+
+h2 {
+    font-size: clamp(32px,5vw,52px);
+    font-weight: normal;
+    line-height: 1.15;
+
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.page.active h2 {
+    animation: appear .8s .3s forwards;
+}
+
+.main-text {
+    max-width: 650px;
+    margin-top: 22px;
+
+    font-size: clamp(16px,2.2vw,20px);
+    line-height: 1.75;
+
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.page.active .main-text {
+    animation: appear .8s .5s forwards;
+}
+
+.note {
+    max-width: 620px;
+    margin-top: 28px;
+
+    padding: 20px 25px;
+
+    background: rgba(255,255,255,.42);
+
+    box-shadow:
+        4px 10px 25px rgba(70,40,20,.12);
+
+    transform: rotate(-1deg) translateY(20px);
+
+    opacity: 0;
+}
+
+.page.active .note {
+    animation: noteAppear .8s .7s forwards;
+}
+
+@keyframes appear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes noteAppear {
+    to {
+        opacity: 1;
+        transform: rotate(-1deg) translateY(0);
+    }
+}
+
+/* ================= STICKERS ================= */
+
+.sticker {
+    position: absolute;
+    z-index: 5;
+    font-size: 40px;
+    pointer-events: none;
+
+    animation: stickerMove 4s ease-in-out infinite;
+}
+
+@keyframes stickerMove {
+    0%,100% {
+        transform: translateY(0) rotate(-5deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+}
+
+.sticker.one {
+    top: 35px;
+    right: 45px;
+}
+
+.sticker.two {
+    bottom: 35px;
+    left: 45px;
+    animation-delay: .8s;
+}
+
+.sticker.three {
+    bottom: 35px;
+    right: 50px;
+    animation-delay: 1.4s;
+}
+
+.sticker.four {
+    top: 80px;
+    left: 45px;
+    animation-delay: 2s;
+}
+
+/* ================= CARDS ================= */
+
+.cards {
+    width: min(650px,100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.card {
+    padding: 15px;
+
+    background: rgba(255,255,255,.35);
+    border-radius: 14px;
+
+    font-family: Arial,sans-serif;
+    font-size: 14px;
+
+    opacity: 0;
+    transform: translateY(15px) scale(.95);
+
+    transition: .3s;
+}
+
+.page.active .card {
+    animation: cardAppear .6s forwards;
+}
+
+.page.active .card:nth-child(1) { animation-delay: .45s; }
+.page.active .card:nth-child(2) { animation-delay: .55s; }
+.page.active .card:nth-child(3) { animation-delay: .65s; }
+.page.active .card:nth-child(4) { animation-delay: .75s; }
+.page.active .card:nth-child(5) { animation-delay: .85s; }
+.page.active .card:nth-child(6) { animation-delay: .95s; }
+
+@keyframes cardAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.card:hover {
+    transform: translateY(-5px) rotate(-1deg);
+    background: rgba(255,255,255,.6);
+}
+
+/* ================= GIFT ================= */
+
+.gift {
+    position: relative;
+
+    margin: 15px;
+
+    font-size: 105px;
+
+    cursor: pointer;
+
+    filter: drop-shadow(0 15px 15px rgba(0,0,0,.15));
+
+    animation: giftFloat 2s ease-in-out infinite;
+
+    transition: .5s;
+}
+
+@keyframes giftFloat {
+    0%,100% {
+        transform: translateY(0) rotate(-4deg);
+    }
+
+    50% {
+        transform: translateY(-13px) rotate(4deg);
+    }
+}
+
+.gift:hover {
+    transform: scale(1.12) rotate(-5deg);
+}
+
+.gift.opened {
+    animation: giftOpen .7s forwards;
+}
+
+@keyframes giftOpen {
+    50% {
+        transform: scale(1.3) rotate(8deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+.secret {
+    max-width: 500px;
+    margin-top: 15px;
+
+    opacity: 0;
+    transform: translateY(20px) scale(.95);
+
+    transition: .7s;
+}
+
+.secret.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* ================= CAKE ================= */
+
+.cake {
+    position: relative;
+    width: 220px;
+    height: 180px;
+    margin: 5px auto 0;
+}
+
+.cake-base {
+    position: absolute;
+    left: 15px;
+    bottom: 0;
+
+    width: 190px;
+    height: 90px;
+
+    border-radius: 15px 15px 22px 22px;
+
+    background:
+        linear-gradient(#d89d78,#b56e51);
+
+    box-shadow:
+        inset 0 -10px 0 rgba(80,40,30,.12);
+}
+
+.cream {
+    position: absolute;
+    left: 15px;
+    bottom: 67px;
+
+    width: 190px;
+    height: 38px;
+
+    background: #fff2dd;
+
+    border-radius: 50%;
+}
+
+.candle {
+    position: absolute;
+    bottom: 95px;
+
+    width: 14px;
+    height: 48px;
+
+    border-radius: 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #e6bd74,
+            #fff0b0,
+            #e6bd74
+        );
+
+    z-index: 4;
+}
+
+.candle:nth-child(1) {
+    left: 58px;
+}
+
+.candle:nth-child(2) {
+    left: 103px;
+}
+
+.candle:nth-child(3) {
+    left: 148px;
+}
+
+.flame {
+    position: absolute;
+    left: 2px;
+    top: -20px;
+
+    width: 11px;
+    height: 20px;
+
+    border-radius: 50% 50% 50% 50%;
+
+    background: #ffd65c;
+
+    box-shadow:
+        0 0 12px #ffd65c,
+        0 0 25px rgba(255,180,50,.6);
+
+    animation:
+        flame 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes flame {
+    from {
+        transform: scale(.8) rotate(-5deg);
+    }
+
+    to {
+        transform: scale(1.15) rotate(5deg);
+    }
+}
+
+.blown .flame {
+    opacity: 0;
+    transform: translateY(-30px) scale(.2);
+    transition: .5s;
+}
+
+.blow-btn {
+    margin-top: 0;
+
+    padding: 12px 24px;
+
+    border: none;
+    border-radius: 30px;
+
+    background: #614658;
+    color: white;
+
+    font-family: Arial,sans-serif;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.blow-btn:hover {
+    transform: translateY(-3px);
+}
+
+/* ================= FINAL ================= */
+
+.final-heart {
+    font-size: 75px;
+
+    margin-bottom: 10px;
+
+    animation:
+        heartbeat 1.4s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%,100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+.final-message {
+    max-width: 650px;
+
+    font-size: clamp(16px,2.2vw,20px);
+
+    line-height: 1.8;
+
+    margin-top: 20px;
+}
+
+.signature {
+    margin-top: 25px;
+    font-style: italic;
+}
+
+/* ================= CONFETTI ================= */
+
+.confetti {
+    position: fixed;
+
+    top: -30px;
+
+    z-index: 9999;
+
+    pointer-events: none;
+
+    animation:
+        confettiFall
+        linear
+        forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform:
+            translateY(110vh)
+            rotate(720deg);
+
+        opacity: 0;
+    }
+}
+
+/* ================= FLOATING HEARTS ================= */
+
+.floating-heart {
+    position: fixed;
+
+    bottom: -40px;
+
+    z-index: 9998;
+
+    pointer-events: none;
+
+    animation:
+        heartUp
+        linear
+        forwards;
+}
+
+@keyframes heartUp {
+    to {
+        transform:
+            translateY(-110vh)
+            translateX(var(--move))
+            rotate(20deg);
+
+        opacity: 0;
+    }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+
+    .book-wrapper {
+        width: 94vw;
+        height: 84vh;
+    }
+
+    .page {
+        padding: 32px 24px 38px;
+    }
+
+    .page::before {
+        left: 14px;
+    }
+
+    .book-icon {
+        font-size: 70px;
+    }
+
+    .cover h1 {
+        font-size: 43px;
+    }
+
+    h2 {
+        font-size: 30px;
+    }
+
+    .main-text {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .note {
+        font-size: 14px;
+        padding: 15px 17px;
+        margin-top: 18px;
+    }
+
+    .sticker {
+        font-size: 28px;
+    }
+
+    .sticker.one {
+        top: 20px;
+        right: 20px;
+    }
+
+    .sticker.two {
+        left: 20px;
+        bottom: 20px;
+    }
+
+    .sticker.three {
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .sticker.four {
+        left: 20px;
+        top: 60px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 7px;
+    }
+
+    .card {
+        padding: 9px;
+    }
+
+    .gift {
+        font-size: 80px;
+    }
+
+    .cake {
+        transform: scale(.78);
+        margin: -10px auto -15px;
+    }
+
+    .final-message {
+        font-size: 16px;
+        line-height: 1.65;
+    }
+
+    .final-heart {
+        font-size: 60px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="background">
+    <div class="moon">🌙</div>
+</div>
+
+<div class="book-wrapper">
+<div class="book" id="book">
+
+<!-- ================= COVER ================= -->
+
+<section class="page cover" data-index="0">
+
+    <div class="cover-decoration cd1">✦</div>
+    <div class="cover-decoration cd2">🌙</div>
+    <div class="cover-decoration cd3">🌸</div>
+    <div class="cover-decoration cd4">✨</div>
+
+    <div class="book-icon">📖</div>
+
+    <h1>Для тебя</h1>
+
+    <p>
+        Маленькая история,<br>
+        которую я приготовил<br>
+        специально для тебя ✨
+    </p>
+
+    <button class="open-btn" id="openBook">
+        Открыть книгу
+    </button>
+
+</section>
+
+<!-- ================= PAGE 1 ================= -->
+
+<section class="page" data-index="1">
+
+    <div class="sticker one">🌙</div>
+    <div class="sticker two">🌸</div>
+    <div class="sticker three">✨</div>
+    <div class="sticker four">🦋</div>
+
+    <div class="content">
+
+        <div class="chapter">
+            Глава I
+        </div>
+
+        <h2>
+            Сегодня особенный день
+        </h2>
+
+        <p class="main-text">
+            Потому что именно сегодня
+            родился человек, которому
+            я хочу пожелать очень
+            много счастливых моментов. ❤️
+        </p>
+
+        <div class="note">
+            Иногда самые обычные люди
+            становятся очень важными
+            просто потому, что с ними
+            всегда интересно, весело
+            и спокойно.
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= PAGE 2 ================= -->
+
+<section class="page" data-index="2">
+
+    <div class="sticker one">☁️</div>
+    <div class="sticker two">💐</div>
+    <div class="sticker three">⭐</div>
+
+    <div class="content">
+
+        <div class="chapter">
+            Глава II
+        </div>
+
+        <h2>
+            Немного о главной героине
+        </h2>
+
+        <div class="cards">
+
+            <div class="card">🌷 Добрая</div>
+            <div class="card">😂 С тобой весело</div>
+            <div class="card">📚 Любишь книги</div>
+            <div class="card">🎬 Любишь аниме</div>
+            <div class="card">✨ С тобой интересно</div>
+            <div class="card">💫 Особенная атмосфера</div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= PAGE 3 ================= -->
+
+<section class="page" data-index="3">
+
+    <div class="sticker one">💌</div>
+    <div class="sticker two">🌷</div>
+    <div class="sticker three">🧸</div>
+
+    <div class="content">
+
+        <div class="chapter">
+            Глава III
+        </div>
+
+        <h2>
+            Небольшое пожелание
+        </h2>
+
+        <p class="main-text">
+            Пусть в твоей жизни будет
+            как можно больше моментов,
+            которые хочется запомнить.
+        </p>
+
+        <div class="note">
+
+            Людей, рядом с которыми
+            можно смеяться до слёз.
+
+            <br><br>
+
+            Книг, от которых невозможно
+            оторваться.
+
+            <br><br>
+
+            И дней, которые заканчиваются
+            улыбкой. 🤍
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= PAGE 4 ================= -->
+
+<section class="page" data-index="4">
+
+    <div class="sticker one">✨</div>
+    <div class="sticker two">🎀</div>
+
+    <div class="content">
+
+        <div class="chapter">
+            Секретная страница
+        </div>
+
+        <h2>
+            Здесь кое-что есть...
+        </h2>
+
+        <div class="gift" id="gift">
+            🎁
+        </div>
+
+        <p>
+            Нажми на подарок
+        </p>
+
+        <p class="secret" id="secret">
+            Иногда лучший подарок —
+            это просто напомнить человеку,
+            что он действительно важен. 💜
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ================= PAGE 5 ================= -->
+
+<section class="page" data-index="5">
+
+    <div class="sticker one">🎈</div>
+    <div class="sticker two">⭐</div>
+
+    <div class="content">
+
+        <div class="chapter">
+            Главная сцена
+        </div>
+
+        <h2>
+            А теперь...
+        </h2>
+
+        <p class="main-text">
+            Самая важная часть этого дня 🎂
+        </p>
+
+        <div class="cake" id="cake">
+
+            <div class="candle">
+                <div class="flame"></div>
+            </div>
+
+            <div class="candle">
+                <div class="flame"></div>
+            </div>
+
+            <div class="candle">
+                <div class="flame"></div>
+            </div>
+
+            <div class="cream"></div>
+
+            <div class="cake-base"></div>
+
+        </div>
+
+        <button class="blow-btn" id="blowBtn">
+            🕯️ Задуть свечи
+        </button>
+
+    </div>
+
+</section>
+
+<!-- ================= FINAL ================= -->
+
+<section class="page" data-index="6">
+
+    <div class="sticker one">🌙</div>
+    <div class="sticker two">💜</div>
+    <div class="sticker three">✨</div>
+
+    <div class="content">
+
+        <div class="final-heart">
+            💜
+        </div>
+
+        <div class="chapter">
+            Последняя страница
+        </div>
+
+        <h2>
+            С Днём Рождения! 🎂
+        </h2>
+
+        <p class="final-message">
+
+            Желаю тебе много счастливых
+            моментов, хороших людей рядом,
+            исполнения желаний и книг,
+            от которых невозможно оторваться. 📚
+
+            <br><br>
+
+            Пусть эта новая глава твоей жизни
+            будет ещё интереснее предыдущей. ✨
+
+        </p>
+
+        <div class="signature">
+            И пусть сегодня ты улыбнёшься
+            хотя бы один раз из-за этой
+            маленькой книги. ❤️
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+</div>
+
+<script>
+
+/* =====================================================
+   PAGES
+===================================================== */
+
+const pages = [
+    ...document.querySelectorAll(".page")
+];
+
+let currentPage = 0;
+
+const totalPages = pages.length;
+
+
+/* =====================================================
+   STACK
+===================================================== */
+
+function setupPages() {
+
+    pages.forEach((page,index) => {
+
+        page.style.zIndex =
+            totalPages - index;
+
+    });
+
+    pages[0].classList.add("active");
+}
+
+setupPages();
+
+
+/* =====================================================
+   NEXT
+===================================================== */
+
+function nextPage() {
+
+    if (currentPage >= totalPages - 1)
+        return;
+
+    pages[currentPage].classList.remove("active");
+
+    pages[currentPage].classList.add("flipping");
+
+    pages[currentPage].classList.add("flipped");
+
+    currentPage++;
+
+    pages[currentPage].classList.add("active");
+
+    setTimeout(() => {
+
+        pages.forEach((page,index) => {
+
+            if (index !== currentPage) {
+
+                page.classList.remove("flipping");
+
+            }
+
+        });
+
+    },1200);
+
+}
+
+
+/* =====================================================
+   PREVIOUS
+===================================================== */
+
+function previousPage() {
+
+    if (currentPage <= 0)
+        return;
+
+    pages[currentPage].classList.remove("active");
+
+    currentPage--;
+
+    pages[currentPage].classList.remove("flipped");
+
+    pages[currentPage].classList.add("active");
+
+}
+
+
+/* =====================================================
+   OPEN
+===================================================== */
+
+document
+.getElementById("openBook")
+.addEventListener("click",(e)=>{
+
+    e.stopPropagation();
+
+    nextPage();
+
+    confetti(45);
+
+});
+
+
+/* =====================================================
+   CLICK NAVIGATION
+===================================================== */
+
+document.addEventListener("click",(e)=>{
+
+    if (
+        e.target.closest("button") ||
+        e.target.closest(".gift")
+    ) {
+        return;
+    }
+
+    if (currentPage === 0)
+        return;
+
+    if (
+        e.clientX >
+        window.innerWidth / 2
+    ) {
+
+        nextPage();
+
+    } else {
+
+        previousPage();
+
+    }
+
+});
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key === "ArrowRight")
+        nextPage();
+
+    if(e.key === "ArrowLeft")
+        previousPage();
+
+});
+
+
+/* =====================================================
+   SWIPE
+===================================================== */
+
+let startX = 0;
+let startY = 0;
+
+document.addEventListener("touchstart",(e)=>{
+
+    startX =
+        e.changedTouches[0].screenX;
+
+    startY =
+        e.changedTouches[0].screenY;
+
+},{passive:true});
+
+
+document.addEventListener("touchend",(e)=>{
+
+    const endX =
+        e.changedTouches[0].screenX;
+
+    const endY =
+        e.changedTouches[0].screenY;
+
+    const dx =
+        startX - endX;
+
+    const dy =
+        startY - endY;
+
+    if(Math.abs(dx) < 50)
+        return;
+
+    if(Math.abs(dx) < Math.abs(dy))
+        return;
+
+    if(dx > 0)
+        nextPage();
+    else
+        previousPage();
+
+},{passive:true});
+
+
+/* =====================================================
+   GIFT
+===================================================== */
+
+const gift =
+    document.getElementById("gift");
+
+const secret =
+    document.getElementById("secret");
+
+gift.addEventListener("click",(e)=>{
+
+    e.stopPropagation();
+
+    if(secret.classList.contains("show"))
+        return;
+
+    gift.classList.add("opened");
+
+    setTimeout(()=>{
+
+        secret.classList.add("show");
+
+    },350);
+
+    confetti(55);
+
+    hearts(12);
+
+});
+
+
+/* =====================================================
+   CAKE
+===================================================== */
+
+const cake =
+    document.getElementById("cake");
+
+const blowBtn =
+    document.getElementById("blowBtn");
+
+blowBtn.addEventListener("click",(e)=>{
+
+    e.stopPropagation();
+
+    cake.classList.add("blown");
+
+    blowBtn.textContent =
+        "✨ Желание загадано";
+
+    blowBtn.disabled = true;
+
+    confetti(100);
+
+    hearts(20);
+
+});
+
+
+/* =====================================================
+   CONFETTI
+===================================================== */
+
+function confetti(amount) {
+
+    const symbols = [
+        "✨",
+        "⭐",
+        "💜",
+        "🌸",
+        "🎉",
+        "🎀",
+        "♡"
+    ];
+
+    for(let i=0;i<amount;i++){
+
+        const element =
+            document.createElement("div");
+
+        element.className =
+            "confetti";
+
+        element.textContent =
+            symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+            ];
+
+        element.style.left =
+            Math.random()*100+"vw";
+
+        element.style.fontSize =
+            8+Math.random()*16+"px";
+
+        element.style.animationDuration =
+            2.5+Math.random()*3+"s";
+
+        document.body.appendChild(element);
+
+        setTimeout(()=>{
+            element.remove();
+        },6000);
+
+    }
+
+}
+
+
+/* =====================================================
+   HEARTS
+===================================================== */
+
+function hearts(amount) {
+
+    for(let i=0;i<amount;i++){
+
+        const heart =
+            document.createElement("div");
+
+        heart.className =
+            "floating-heart";
+
+        heart.textContent =
+            Math.random() > .5
+            ? "💜"
+            : "♡";
+
+        heart.style.left =
+            Math.random()*100+"vw";
+
+        heart.style.fontSize =
+            15+Math.random()*25+"px";
+
+        heart.style.animationDuration =
+            3+Math.random()*3+"s";
+
+        heart.style.setProperty(
+            "--move",
+            (Math.random()*150-75)+"px"
+        );
+
+        document.body.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },7000);
+
+    }
+
+}
+
+
+/* =====================================================
+   STARS
+===================================================== */
+
+const background =
+    document.getElementById("background");
+
+for(let i=0;i<80;i++){
+
+    const star =
+        document.createElement("div");
+
+    star.className =
+        "star";
+
+    star.textContent =
+        Math.random() > .55
+        ? "✦"
+        : "·";
+
+    star.style.left =
+        Math.random()*100+"%";
+
+    star.style.top =
+        Math.random()*100+"%";
+
+    star.style.fontSize =
+        5+Math.random()*11+"px";
+
+    star.style.animationDelay =
+        Math.random()*3+"s";
+
+    background.appendChild(star);
+
+}
+
+</script>
+
+</body>
+</html>
